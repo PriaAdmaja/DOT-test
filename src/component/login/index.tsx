@@ -4,6 +4,7 @@ import { AccountData } from "@/type/account";
 import { toast, ToastContainer } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Input from "../input";
+import Button from "../button";
 
 const Login = () => {
   const [username, setUsername] = useState<string>("");
@@ -66,13 +67,12 @@ const Login = () => {
         />
       </div>
       <div className={style.login_wrap}>
-        <button
-          className={style.login_button}
+        <Button
           type="submit"
           disabled={username === "" || password === ""}
         >
           Login
-        </button>
+        </Button>
       </div>
       <ToastContainer />
     </form>

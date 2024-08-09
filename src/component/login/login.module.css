@@ -9,53 +9,6 @@
   margin-bottom: 20px;
 }
 
-/* .input {
-  font-size: medium;
-  padding: 8px 10px;
-  width: 100%;
-  border: none;
-  border-bottom: 1px solid var(--black-night);
-}
-
-.input:focus {
-  outline: none;
-}
-
-.password {
-  position: relative;
-  width: 100%;
-}
-
-.password_toggle {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  border: none;
-  cursor: pointer;
- transition: ease-out ;
-} */
-
-.login_button {
-  padding: 7px 25px;
-  cursor: pointer;
-  font-size: medium;
-  border: none;
-  background-color: var(--black-night);
-  color: var(--white-smoke);
-  border-radius: 5px;
-  transition: ease-out;
-}
-
-.login_button:enabled:active {
-    background-color: var(--white-smoke);
-    color: var(--black-night)
-}
-
-.login_button:disabled {
-    cursor: not-allowed;
-}
-
 .login_wrap {
     display: flex;
     justify-content: flex-end;

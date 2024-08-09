@@ -4,6 +4,7 @@ import style from "../login/login.module.css";
 import { toast, ToastContainer } from "react-toastify";
 import { AccountData } from "@/type/account";
 import Input from "../input";
+import Button from "../button";
 
 const Register = () => {
   const [name, setName] = useState<string>("");
@@ -75,13 +76,12 @@ const Register = () => {
         />
       </div>
       <div className={style.login_wrap}>
-        <button
-          className={style.login_button}
+        <Button
           type="submit"
           disabled={name === "" || userName === "" || password === ""}
         >
           Daftar
-        </button>
+        </Button>
       </div>
       <ToastContainer draggable />
     </form>

@@ -1,0 +1,19 @@
+.button {
+    padding: 7px 25px;
+    cursor: pointer;
+    font-size: medium;
+    border: none;
+    background-color: var(--black-night);
+    color: var(--white-smoke);
+    border-radius: 5px;
+    transition: ease-out;
+  }
+  
+  .button:enabled:active {
+      background-color: var(--white-smoke);
+      color: var(--black-night)
+  }
+  
+  .button:disabled {
+      cursor: not-allowed;
+  }
