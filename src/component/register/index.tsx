@@ -18,7 +18,7 @@ const Register = () => {
     );
     const previousData = parsedStorageData === null ? [] : parsedStorageData;
     setAccountList(previousData);
-  }, [accountList]);
+  }, []);
 
   const register = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -1,42 +1,39 @@
 "use client";
+
+import { AccountData } from "@/type/account";
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Loading from "../loading";
 
 const AuthFilter = ({ children }: { children: JSX.Element }) => {
+  const [userData, setUserData] = useState<AccountData | undefined | null>(
+    undefined
+  );
   const router = useRouter();
   const pathname = usePathname();
 
-  let isAllow = false;
-  if (typeof window !== "undefined") {
-    const user = localStorage.getItem("user");
-    const parsedUser = JSON.parse(user as string);
-    if (parsedUser) {
-      isAllow = true;
+  useEffect(() => {
+    if (userData === undefined) {
+      const user = localStorage.getItem("user");
+      const parsedUser = JSON.parse(user as string);
+      setUserData(parsedUser);
     }
+  }, [userData]);
+
+  if (userData === undefined) {
+    return <Loading />;
   }
 
-  useEffect(() => {
-    if (!isAllow) {
-      if (pathname !== "/") {
-        router.push("/");
-        return;
-      }
-    } else {
-      if (pathname === "/") {
-        router.push("/dashboard");
-        return;
-      }
-    }
-  }, [isAllow, pathname, router]);
-
-  if (!isAllow) {
+  if (userData === null) {
     if (pathname !== "/") {
+      router.push('/')
       return <></>;
     }
   }
 
-  if (isAllow) {
+  if (userData !== null) {
     if (pathname === "/") {
+      router.push('/dashboard')
       return <></>;
     }
   }

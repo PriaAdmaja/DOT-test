@@ -19,7 +19,7 @@ const Login = () => {
       const parsedAccount: AccountData[] = JSON.parse(accountData as string);
       setParsedAccountData(parsedAccount);
     }
-  }, [parsedAccountData]);
+  }, []);
 
   const login = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
