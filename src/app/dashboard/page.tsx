@@ -21,7 +21,7 @@ const Dashboard = () => {
       .join("");
     const removeFirstZero = filteredWeightValue
       .split("")
-      .map((d) => (d[0] === "0" ? "" : d))
+      .map((d, i) => (i === 0 && d === "0" ? "" : d))
       .join("");
     setWeight(removeFirstZero === "" ? 0 : Number(removeFirstZero));
   };
