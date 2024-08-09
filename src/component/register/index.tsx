@@ -1,7 +1,6 @@
 "use client";
 import { ChangeEvent, FormEvent, useState } from "react";
 import style from "../login/login.module.css";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import { AccountData } from "@/type/account";
 import Input from "../input";

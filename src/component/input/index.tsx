@@ -1,4 +1,4 @@
-import { ChangeEvent, ComponentPropsWithoutRef, useState } from "react";
+import { ComponentPropsWithoutRef, useState } from "react";
 import style from "./input.module.css";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
