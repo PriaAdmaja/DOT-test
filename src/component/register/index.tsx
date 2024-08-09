@@ -18,7 +18,7 @@ const Register = () => {
     );
     const previousData = parsedStorageData === null ? [] : parsedStorageData;
     setAccountList(previousData);
-  }, []);
+  }, [accountList]);
 
   const register = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,7 +26,7 @@ const Register = () => {
     if (accountList.find((d) => d.userName === userName) !== undefined) {
       return toast.error("Username telah terdaftar!");
     }
-    const previousData = [...accountList]
+    const previousData = [...accountList];
     const data = {
       name: name,
       userName: userName,

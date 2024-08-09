@@ -9,6 +9,7 @@ const Login = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [parsedAccountData, setParsedAccountData] = useState<AccountData[]>([]);
+  const [isLoginSuccess, setIsLoginSuccess] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -18,7 +19,7 @@ const Login = () => {
       const parsedAccount: AccountData[] = JSON.parse(accountData as string);
       setParsedAccountData(parsedAccount);
     }
-  }, []);
+  }, [parsedAccountData]);
 
   const login = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,11 +32,15 @@ const Login = () => {
     if (userData?.password !== password) {
       return toast.error("Password salah!");
     }
-
     localStorage.setItem("user", JSON.stringify(userData));
-
-    router.push("/dashboard");
+    setIsLoginSuccess(true)
   };
+
+  useEffect(() => {
+    if(isLoginSuccess) {
+      router.push("/dashboard");
+    }
+  }, [isLoginSuccess, router])
 
   return (
     <form onSubmit={login}>
