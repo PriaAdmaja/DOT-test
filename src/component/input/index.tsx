@@ -11,7 +11,6 @@ const Input = ({ isPassword = false, ...rest }: InputProps) => {
   return (
     <div className={style.input_container}>
       <input
-        placeholder="Masukkan Password"
         type={!isPassword ? "text" : showPassword ? "text" : "password"}
         className={style.input}
         {...rest}
