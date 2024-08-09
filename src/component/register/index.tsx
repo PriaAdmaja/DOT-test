@@ -1,17 +1,19 @@
-'use client'
-import { ChangeEvent, useState } from "react";
+"use client";
+import { ChangeEvent, FormEvent, useState } from "react";
 import style from "../login/login.module.css";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import { AccountData } from "@/type/account";
+import Input from "../input";
 
 const Register = () => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const register = () => {
+  const register = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     const storageData = localStorage.getItem("account");
     const parsedStorageData: AccountData[] | null = JSON.parse(
       storageData as string
@@ -31,72 +33,55 @@ const Register = () => {
     previousData.push(data);
     localStorage.setItem("account", JSON.stringify(previousData));
     toast.success("Pendaftaran berhasil!");
-    setName('');
-    setUserName('');
-    setPassword('');
+    setName("");
+    setUserName("");
+    setPassword("");
   };
 
   return (
-    <section>
+    <form onSubmit={register}>
       <div className={style.input_wrap}>
         <label className={style.label}>Nama :</label>
-        <input
+        <Input
           placeholder="Masukkan Nama"
-          type="text"
-          className={style.input}
           value={name}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setName(e.target.value)
+            setName(e.target.value);
           }}
         />
       </div>
       <div className={style.input_wrap}>
         <label className={style.label}>Username :</label>
-        <input
+        <Input
           placeholder="Masukkan Username"
-          type="text"
-          className={style.input}
           value={userName}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setUserName(e.target.value)
+            setUserName(e.target.value);
           }}
         />
       </div>
       <div className={style.input_wrap}>
         <label className={style.label}>Password :</label>
-        <div className={style.password}>
-          <input
-            placeholder="Masukkan Password"
-            type={showPassword ? "text" : "password"}
-            className={style.input}
-            value={password}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                setPassword(e.target.value)
-              }}
-          />
-          <button
-            className={style.password_toggle}
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? (
-              <FaRegEye style={{ width: 20, height: 20 }} />
-            ) : (
-              <FaRegEyeSlash style={{ width: 20, height: 20 }} />
-            )}
-          </button>
-        </div>
+        <Input
+          placeholder="Masukkan Password"
+          value={password}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            setPassword(e.target.value);
+          }}
+          isPassword
+        />
       </div>
       <div className={style.login_wrap}>
         <button
           className={style.login_button}
-          onClick={register}
+          type="submit"
           disabled={name === "" || userName === "" || password === ""}
         >
           Daftar
         </button>
       </div>
       <ToastContainer draggable />
-    </section>
+    </form>
   );
 };
 

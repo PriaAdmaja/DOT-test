@@ -12,7 +12,7 @@ const Input = ({ isPassword = false, ...rest }: InputProps) => {
     <div className={style.input_container}>
       <input
         placeholder="Masukkan Password"
-        type={showPassword ? "text" : "password"}
+        type={!isPassword ? "text" : showPassword ? "text" : "password"}
         className={style.input}
         {...rest}
       />

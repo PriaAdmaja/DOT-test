@@ -1,13 +1,11 @@
-'use client'
 import { ChangeEvent, FormEvent, useState } from "react";
 import style from "./login.module.css";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { AccountData } from "@/type/account";
 import { toast, ToastContainer } from "react-toastify";
 import { useRouter } from "next/navigation";
+import Input from "../input";
 
 const Login = () => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -23,24 +21,22 @@ const Login = () => {
       return toast.error("Akun belum terdaftar!");
     }
 
-    const userData = parsedAccountData.find(d => d.userName === username)
-    if(userData?.password !== password) {
-      return toast.error('Password salah!')
+    const userData = parsedAccountData.find((d) => d.userName === username);
+    if (userData?.password !== password) {
+      return toast.error("Password salah!");
     }
 
-    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem("user", JSON.stringify(userData));
 
-    router.push('/dashboard')
+    router.push("/dashboard");
   };
 
   return (
     <form onSubmit={login}>
       <div className={style.input_wrap}>
         <label className={style.label}>Username :</label>
-        <input
+        <Input
           placeholder="Masukkan Username"
-          type="text"
-          className={style.input}
           value={username}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             setUsername(e.target.value);
@@ -49,28 +45,14 @@ const Login = () => {
       </div>
       <div className={style.input_wrap}>
         <label className={style.label}>Password :</label>
-        <div className={style.password}>
-          <input
-            placeholder="Masukkan Password"
-            type={showPassword ? "text" : "password"}
-            className={style.input}
-            value={password}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              setPassword(e.target.value);
-            }}
-          />
-          <button
-            type="button"
-            className={style.password_toggle}
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? (
-              <FaRegEye style={{ width: 20, height: 20 }} />
-            ) : (
-              <FaRegEyeSlash style={{ width: 20, height: 20 }} />
-            )}
-          </button>
-        </div>
+        <Input
+          placeholder="Masukkan password"
+          value={password}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            setPassword(e.target.value);
+          }}
+          isPassword
+        />
       </div>
       <div className={style.login_wrap}>
         <button
