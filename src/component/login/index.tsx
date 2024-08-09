@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import style from "./login.module.css";
 import { AccountData } from "@/type/account";
 import { toast, ToastContainer } from "react-toastify";
@@ -8,11 +8,17 @@ import Input from "../input";
 const Login = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [parsedAccountData, setParsedAccountData] = useState<AccountData[]>([]);
 
   const router = useRouter();
 
-  const accountData = localStorage.getItem("account");
-  const parsedAccountData: AccountData[] = JSON.parse(accountData as string);
+  useEffect(() => {
+    const accountData = localStorage.getItem("account");
+    if (accountData) {
+      const parsedAccount: AccountData[] = JSON.parse(accountData as string);
+      setParsedAccountData(parsedAccount);
+    }
+  }, []);
 
   const login = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

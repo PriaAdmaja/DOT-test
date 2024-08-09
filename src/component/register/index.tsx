@@ -1,5 +1,5 @@
 "use client";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import style from "../login/login.module.css";
 import { toast, ToastContainer } from "react-toastify";
 import { AccountData } from "@/type/account";
@@ -9,20 +9,24 @@ const Register = () => {
   const [name, setName] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [accountList, setAccountList] = useState<AccountData[]>([]);
 
-  const register = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  useEffect(() => {
     const storageData = localStorage.getItem("account");
     const parsedStorageData: AccountData[] | null = JSON.parse(
       storageData as string
     );
     const previousData = parsedStorageData === null ? [] : parsedStorageData;
+    setAccountList(previousData);
+  }, []);
 
-    if (previousData.find((d) => d.userName === userName) !== undefined) {
+  const register = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (accountList.find((d) => d.userName === userName) !== undefined) {
       return toast.error("Username telah terdaftar!");
     }
-
+    const previousData = [...accountList]
     const data = {
       name: name,
       userName: userName,
