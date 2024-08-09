@@ -3,8 +3,9 @@ import { useState } from "react";
 import styles from "./page.module.css";
 import Login from "@/component/login";
 import Register from "@/component/register";
+import AuthFilter from "@/component/auth-filter";
 
-export default function Home() {
+function Home() {
   const [tab, setTab] = useState<"login" | "register">("login");
   return (
     <main className={styles.main}>
@@ -31,5 +32,13 @@ export default function Home() {
         </section>
       </section>
     </main>
+  );
+}
+
+export default function Page() {
+  return (
+    <AuthFilter>
+      <Home />
+    </AuthFilter>
   );
 }

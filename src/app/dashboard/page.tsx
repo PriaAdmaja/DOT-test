@@ -1,3 +1,5 @@
+import AuthFilter from "@/component/auth-filter";
+
 const Dashboard = () => {
   return (
     <>
@@ -6,4 +8,10 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard
+export default function Page() {
+  return (
+    <AuthFilter>
+      <Dashboard />
+    </AuthFilter>
+  );
+}
