@@ -1,0 +1,25 @@
+.input_container {
+  position: relative;
+}
+
+.input {
+  font-size: medium;
+  padding: 8px 10px;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid var(--black-night);
+}
+
+.input:focus {
+  outline: none;
+}
+
+.password_toggle {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  cursor: pointer;
+  transition: ease-out;
+}
