@@ -1,13 +1,9 @@
+'use client'
 import { ChangeEvent, useState } from "react";
 import style from "../login/login.module.css";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
-
-type AccountData = {
-  name: string;
-  userName: string;
-  password: string;
-};
+import { AccountData } from "@/type/account";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
