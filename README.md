@@ -8,6 +8,7 @@ DOT CHALENGE adalah web app yang dibuat untuk hiring test di PT. Digdaya Olah Te
 
 - [Next JS](https://nextjs.org/)
 - [Axios](https://axios-http.com/)
+- [React Toastify](https://fkhadra.github.io/react-toastify)
 
 
 ## Installation
