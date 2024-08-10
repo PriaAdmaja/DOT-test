@@ -7,7 +7,6 @@ import SearchableInput from "@/component/searchable-input";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import Image from "next/image";
-import Loading from "@/component/loading";
 
 type PokeUrlResult = {
   name: string;
@@ -62,6 +61,7 @@ const Dashboard = () => {
                 })}
                 setValue={async (d) => {
                   try {
+                    setSelectGeneration(true);
                     const res = await axios.get(d.value);
                     const result = res.data.types;
                     if (result.length === 0) {
@@ -69,17 +69,20 @@ const Dashboard = () => {
                         { name: "Tidak ada data", url: "" },
                       ]);
                     }
-                    setSelectGeneration(true);
                     setPokemonType(result);
                   } catch (error) {
                     toast.error("Gagal mengunduh data tipe pokemon");
                   }
                 }}
                 placeholder="Generasi"
-                clearValue={() => setSelectGeneration(false)}
+                clearValue={() => {
+                  setSelectType(false);
+                  setSelectGeneration(false);
+                  setPokemonType([{ name: "Loading...", url: "" }]);
+                }}
               />
             </div>
-            {pokemonType.length > 0 && selectGeneration && (
+            {selectGeneration && (
               <div className={style.input_wrap}>
                 <SearchableInput
                   options={pokemonType.map((d) => ({
@@ -88,6 +91,7 @@ const Dashboard = () => {
                   }))}
                   setValue={async (d) => {
                     try {
+                      setSelectType(true);
                       const res = await axios.get(d.value);
                       const result = res.data.pokemon.map(
                         (d: any) => d.pokemon
@@ -97,18 +101,20 @@ const Dashboard = () => {
                           { name: "Tidak ada data", url: "" },
                         ]);
                       }
-                      setSelectType(true);
                       setPokemonName(result);
                     } catch (error) {
                       toast.error("Gagal mengunduh daftar pokemon");
                     }
                   }}
                   placeholder="Tipe Pokemon"
-                  clearValue={() => setSelectType(false)}
+                  clearValue={() => {
+                    setSelectType(false);
+                    setPokemonName([{ name: "Loading...", url: "" }]);
+                  }}
                 />
               </div>
             )}
-            {pokemonName.length > 0 && selectType && (
+            {selectType && (
               <div className={style.input_wrap}>
                 <SearchableInput
                   options={pokemonName.map((d) => ({
