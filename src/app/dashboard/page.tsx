@@ -7,6 +7,7 @@ import SearchableInput from "@/component/searchable-input";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import Image from "next/image";
+import Loading from "@/component/loading";
 
 type PokeUrlResult = {
   name: string;
@@ -18,6 +19,7 @@ type PokemonData = {
   name: string;
   height: number;
   weight: number;
+  abilities: { ability: { name: string } }[];
   sprites: { front_default: string };
 };
 const Dashboard = () => {
@@ -35,6 +37,7 @@ const Dashboard = () => {
   const [pokemonData, setPokemonData] = useState<PokemonData | undefined>(
     undefined
   );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     axios
@@ -42,7 +45,7 @@ const Dashboard = () => {
       .then((res) => setGenerationList(res.data.results))
       .catch((err: Error) => console.log(err.message));
   }, []);
-
+  console.log(pokemonData);
   return (
     <Layout>
       <section className={style.section}>
@@ -114,35 +117,60 @@ const Dashboard = () => {
                   }))}
                   setValue={async (d) => {
                     try {
-                      console.log(d);
+                      setIsLoading(true);
                       const res = await axios.get(d.value);
                       const result = res.data;
                       setPokemonData(result);
                     } catch (error) {
                       toast.error("Gagal mengunduh data pokemon");
+                    } finally {
+                      setIsLoading(false);
                     }
                   }}
                   placeholder="Nama Pokemon"
+                  clearValue={() => {
+                    setPokemonData(undefined);
+                  }}
                 />
               </div>
             )}
           </header>
-          {pokemonData !== undefined && (
-            <section className={style.data_container}>
-              <p className={style.title}>{pokemonData.name.toUpperCase()}</p>
-              <div className={style.poke_data}>
-                <Image
-                  src={pokemonData.sprites.front_default}
-                  alt={pokemonData.name || "img"}
-                  width={200}
-                  height={200}
-                />
-                <div>
-                  <p>Berat : {pokemonData.weight} kg</p>
-                  <p>Tinggi : {pokemonData.height} cm</p>
-                </div>
-              </div>
-            </section>
+          {isLoading ? (
+            <div className={style.loading}>
+              <p className={style.loader}>Mohon ditunggu...</p>
+            </div>
+          ) : (
+            <div>
+              {pokemonData !== undefined && (
+                <section className={style.data_container}>
+                  <p className={style.title}>
+                    {pokemonData.name.toUpperCase()}
+                  </p>
+                  <div className={style.poke_data}>
+                    <Image
+                      src={pokemonData.sprites.front_default}
+                      alt={pokemonData.name || "img"}
+                      width={200}
+                      height={200}
+                    />
+                    <div className={style.flex_col}>
+                      <p>Berat {pokemonData.weight} kg</p>
+                      <p>Tinggi {pokemonData.height} cm</p>
+                      <div>
+                        <p>Kemampuan : </p>
+                        {pokemonData.abilities.map((d, i) => {
+                          return (
+                            <p style={{ paddingLeft: 20 }} key={i}>
+                              {i + 1}. {d.ability.name}
+                            </p>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              )}{" "}
+            </div>
           )}
         </section>
         <ToastContainer />

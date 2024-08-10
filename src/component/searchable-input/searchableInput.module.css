@@ -6,7 +6,7 @@
 .select_container {
     position: absolute;
     width: 100%;
-    max-height: 100px;
+    max-height: 200px;
     bottom: -1;
     overflow-y: scroll;
 }
