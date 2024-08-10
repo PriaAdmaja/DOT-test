@@ -1,0 +1,31 @@
+.container {
+    width: 100%;
+    position: relative;
+}
+
+.select_container {
+    position: absolute;
+    width: 100%;
+    max-height: 100px;
+    bottom: -1;
+    overflow-y: scroll;
+}
+
+.select_row {
+    padding: 4px 8px;
+}
+
+.select_row:hover {
+    cursor: pointer;
+    background-color: var(--black-night);
+    color: var(--white-smoke);
+}
+
+.clear_button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 5px;
+    border: none;
+    cursor: pointer;
+}

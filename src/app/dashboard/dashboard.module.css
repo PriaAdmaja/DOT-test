@@ -24,7 +24,6 @@
   display: flex;
   gap: 12px;
   align-items: baseline;
-  justify-content: center;
 }
 
 .input_wrap {
@@ -39,16 +38,16 @@
 }
 
 .weight_wrap {
-    display: flex;
-    gap: 10px;
-    align-items: baseline;
-    margin-right: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin-right: 20px;
 }
 
 .number_button_wrap {
-    display: flex;
-    gap: 10px;
-    align-items: baseline;
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
 }
 
 .number_button {
@@ -58,4 +57,14 @@
 
 .number_button:active {
   transform: scale(0.9);
+}
+
+.data_container {
+  width: 100%;
+  padding: 50px;
+}
+
+.poke_data {
+  display: flex;
+  gap: 100px;
 }

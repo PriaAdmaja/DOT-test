@@ -1,12 +1,13 @@
-import { ComponentPropsWithoutRef, useState } from "react";
+import { ComponentPropsWithoutRef, LegacyRef, useState } from "react";
 import style from "./input.module.css";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 type InputProps = {
   isPassword?: boolean;
+  ref?: LegacyRef<HTMLInputElement>
 } & ComponentPropsWithoutRef<"input">;
 
-const Input = ({ isPassword = false, ...rest }: InputProps) => {
+const Input = ({ isPassword = false, ref, ...rest }: InputProps) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   return (
     <div className={style.input_container}>
@@ -14,6 +15,7 @@ const Input = ({ isPassword = false, ...rest }: InputProps) => {
         type={!isPassword ? "text" : showPassword ? "text" : "password"}
         className={style.input}
         {...rest}
+        ref={ref}
       />
       {isPassword && (
         <button

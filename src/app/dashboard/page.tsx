@@ -2,85 +2,150 @@
 import AuthFilter from "@/component/auth-filter";
 import Layout from "@/component/layout";
 import style from "./dashboard.module.css";
-import Input from "@/component/input";
-import { BsDashCircle, BsPlusCircle } from "react-icons/bs";
-import Button from "@/component/button";
-import { ChangeEvent, useState } from "react";
+import { useEffect, useState } from "react";
+import SearchableInput from "@/component/searchable-input";
+import { toast, ToastContainer } from "react-toastify";
+import axios from "axios";
+import Image from "next/image";
 
+type PokeUrlResult = {
+  name: string;
+  url: string;
+};
+
+type PokemonData = {
+  id: number;
+  name: string;
+  height: number;
+  weight: number;
+  sprites: { front_default: string };
+};
 const Dashboard = () => {
-  const [fromAddress, setFromAddress] = useState<string>("");
-  const [toAddress, setToAddress] = useState<string>("");
-  const [weight, setWeight] = useState<number>(0);
+  const [generationList, setGenerationList] = useState<PokeUrlResult[]>([
+    { name: "Loading...", url: "" },
+  ]);
+  const [selectGeneration, setSelectGeneration] = useState<boolean>(false);
+  const [pokemonType, setPokemonType] = useState<PokeUrlResult[]>([
+    { name: "Loading...", url: "" },
+  ]);
+  const [selectType, setSelectType] = useState<boolean>(false);
+  const [pokemonName, setPokemonName] = useState<PokeUrlResult[]>([
+    { name: "Loading...", url: "" },
+  ]);
+  const [pokemonData, setPokemonData] = useState<PokemonData | undefined>(
+    undefined
+  );
 
-  const inputWeight = (e: ChangeEvent<HTMLInputElement>) => {
-    const weightValue = e.target.value;
-    const number = "1234567890";
-    const filteredWeightValue = weightValue
-      .split("")
-      .map((d) => (number.includes(d) ? d : ""))
-      .join("");
-    const removeFirstZero = filteredWeightValue
-      .split("")
-      .map((d, i) => (i === 0 && d === "0" ? "" : d))
-      .join("");
-    setWeight(removeFirstZero === "" ? 0 : Number(removeFirstZero));
-  };
+  useEffect(() => {
+    axios
+      .get("https://pokeapi.co/api/v2/generation/")
+      .then((res) => setGenerationList(res.data.results))
+      .catch((err: Error) => console.log(err.message));
+  }, []);
 
   return (
     <Layout>
       <section className={style.section}>
-        <p className={style.title}>Cek Ongkir</p>
+        <p className={style.title}>Cari Pokemon</p>
         <section className={style.card}>
-          <div className={style.filter}>
+          <header className={style.filter}>
             <div className={style.input_wrap}>
-              <Input
-                placeholder="Dari"
-                value={fromAddress}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setFromAddress(e.target.value)
-                }
-              />
-            </div>
-            <div className={style.input_wrap}>
-              <Input
-                placeholder="Menuju"
-                value={toAddress}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setToAddress(e.target.value)
-                }
-              />
-            </div>
-            <section className={style.weight_wrap}>
-              <div className={style.input_weight}>
-                <Input
-                  placeholder="Berat"
-                  value={weight}
-                  onChange={inputWeight}
-                />
-                <p>KG</p>
-              </div>
-              <div className={style.number_button_wrap}>
-                <button
-                  type="button"
-                  className={style.number_button}
-                  onClick={() => setWeight((prev) => prev + 1)}
-                >
-                  <BsPlusCircle />
-                </button>
-                <button
-                  type="button"
-                  className={style.number_button}
-                  onClick={() =>
-                    setWeight((prev) => (prev === 0 ? 0 : prev - 1))
+              <SearchableInput
+                options={generationList.map((d) => {
+                  return {
+                    label: d.name,
+                    value: d.url,
+                  };
+                })}
+                setValue={async (d) => {
+                  try {
+                    const res = await axios.get(d.value);
+                    const result = res.data.types;
+                    if (result.length === 0) {
+                      return setPokemonType([
+                        { name: "Tidak ada data", url: "" },
+                      ]);
+                    }
+                    setSelectGeneration(true);
+                    setPokemonType(result);
+                  } catch (error) {
+                    toast.error("Gagal mengunduh data tipe pokemon");
                   }
-                >
-                  <BsDashCircle />
-                </button>
+                }}
+                placeholder="Generasi"
+                clearValue={() => setSelectGeneration(false)}
+              />
+            </div>
+            {pokemonType.length > 0 && selectGeneration && (
+              <div className={style.input_wrap}>
+                <SearchableInput
+                  options={pokemonType.map((d) => ({
+                    label: d.name,
+                    value: d.url,
+                  }))}
+                  setValue={async (d) => {
+                    try {
+                      const res = await axios.get(d.value);
+                      const result = res.data.pokemon.map(
+                        (d: any) => d.pokemon
+                      );
+                      if (result.length === 0) {
+                        return setPokemonName([
+                          { name: "Tidak ada data", url: "" },
+                        ]);
+                      }
+                      setSelectType(true);
+                      setPokemonName(result);
+                    } catch (error) {
+                      toast.error("Gagal mengunduh daftar pokemon");
+                    }
+                  }}
+                  placeholder="Tipe Pokemon"
+                  clearValue={() => setSelectType(false)}
+                />
+              </div>
+            )}
+            {pokemonName.length > 0 && selectType && (
+              <div className={style.input_wrap}>
+                <SearchableInput
+                  options={pokemonName.map((d) => ({
+                    label: d.name,
+                    value: d.url,
+                  }))}
+                  setValue={async (d) => {
+                    try {
+                      console.log(d);
+                      const res = await axios.get(d.value);
+                      const result = res.data;
+                      setPokemonData(result);
+                    } catch (error) {
+                      toast.error("Gagal mengunduh data pokemon");
+                    }
+                  }}
+                  placeholder="Nama Pokemon"
+                />
+              </div>
+            )}
+          </header>
+          {pokemonData !== undefined && (
+            <section className={style.data_container}>
+              <p className={style.title}>{pokemonData.name.toUpperCase()}</p>
+              <div className={style.poke_data}>
+                <Image
+                  src={pokemonData.sprites.front_default}
+                  alt={pokemonData.name || "img"}
+                  width={200}
+                  height={200}
+                />
+                <div>
+                  <p>Berat : {pokemonData.weight} kg</p>
+                  <p>Tinggi : {pokemonData.height} cm</p>
+                </div>
               </div>
             </section>
-            <Button type="button">Cari</Button>
-          </div>
+          )}
         </section>
+        <ToastContainer />
       </section>
     </Layout>
   );
