@@ -19,8 +19,7 @@
 
 .filter {
   margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 125px;
   display: flex;
   gap: 12px;
   align-items: baseline;
